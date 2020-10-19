@@ -90,44 +90,51 @@ const graphqlPlayground = new GraphQLPlayground();
 const apiGateway = new ApiGateway({
     routes: [
         {
+            name: "graphql-post",
             path: "/graphql",
             method: "POST",
-            eventHandler: apolloGateway.functions.gateway
+            function: apolloGateway.functions.gateway
         },
         {
+            name: "graphql-options",
             path: "/graphql",
             method: "OPTIONS",
-            eventHandler: apolloGateway.functions.gateway
+            function: apolloGateway.functions.gateway
         },
         {
+            name: "graphql-get",
             path: "/graphql",
             method: "GET",
-            eventHandler: graphqlPlayground.function
+            function: graphqlPlayground.function
         },
         {
+            name: "files-any",
             path: "/files/{path}",
             method: "ANY",
-            eventHandler: fileManager.functions.download
+            function: fileManager.functions.download
         },
         {
+            name: "cms-get",
             path: "/cms/{key+}",
             method: "GET",
-            eventHandler: graphqlPlayground.function
+            function: graphqlPlayground.function
         },
         {
+            name: "cms-post",
             path: "/cms/{key+}",
             method: "POST",
-            eventHandler: headlessCms.functions.content
+            function: headlessCms.functions.content
         },
         {
+            name: "cms-options",
             path: "/cms/{key+}",
             method: "OPTIONS",
-            eventHandler: headlessCms.functions.content
+            function: headlessCms.functions.content
         }
     ]
 });
 
-const cloudfront = new Cloudfront({ apiGateway: apiGateway.gateway });
+const cloudfront = new Cloudfront({ apiGateway });
 
 export const region = process.env.AWS_REGION;
 export const cdnDomain = cloudfront.cloudfront.domainName;
